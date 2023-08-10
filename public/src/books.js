@@ -26,6 +26,23 @@ function partitionBooksByBorrowedStatus(books) {
 
 function getBorrowersForBook(book, accounts) {
 
+  // ######################################### \\
+  
+  const accountsBorrowedBooks = accounts.filter(account => {
+    const accountLookUp = accountLookUpById(book, account)
+    return accountLookUp;
+  });
+  
+  const result = accountsBorrowedBooks.reduce((previous, account) => {
+    account.returned = accountLookUpById(book, account).returned;
+    previous.push(account)
+    return previous
+  }, [])
+  return result.splice(0, 10); 
+
+
+  // ######################################### \\
+/*
   const accountsBorrowedBooks = accounts.filter(account => {
     const accountLookUp = accountLookUpById(book, account)
     return accountLookUp;
@@ -35,6 +52,7 @@ function getBorrowersForBook(book, accounts) {
     accountsBorrowedBooks[i].returned = accountLookUpById(book, accountsBorrowedBooks[i]).returned;
   }
   return accountsBorrowedBooks.splice(0, 10);
+  */ 
 }
 
 function accountLookUpById(book, account) {
